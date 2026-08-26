@@ -114,35 +114,28 @@
 <script>
   // ===== CẤU HÌNH MÔN / NGÔN NGỮ / KHỐI =====
   const SUBJECTS = [
-    { key: "toan", label: "Toán", icon: "➗", hasLang: false, grades: ["Khối 1","Khối 2","Khối 3","Khối 4","Khối 5"] },
+    { key: "toan", label: "Toán", icon: "➗", hasLang: true },
     { key: "khoahoc", label: "Khoa học", icon: "🔬", hasLang: true },
   ];
   const LANGS = [
-    { key: "vi", label: "Tiếng Việt", icon: "🇻🇳", grades: ["Khối 1","Khối 2","Khối 3","Khối 4"] },
-    { key: "en", label: "Tiếng Anh", icon: "🇬🇧", grades: ["Grade 1","Grade 2","Grade 3","Grade 4"] },
+    { key: "vi", label: "Tiếng Việt", icon: "🇻🇳" },
+    { key: "en", label: "Tiếng Anh", icon: "🇬🇧" },
   ];
+
+  // Danh sách khối theo từng cặp môn + ngôn ngữ
+  const GRADES = {
+    toan_vi: ["Khối 1","Khối 2","Khối 3","Khối 4","Khối 5"],
+    toan_en: ["Grade 1","Grade 2","Grade 3","Grade 4","Grade 5"],
+    khoahoc_vi: ["Khối 1","Khối 2","Khối 3","Khối 4","Khối 5"],
+    khoahoc_en: ["Grade 1","Grade 2","Grade 3","Grade 4","Grade 5"],
+  };
 
   // Link phiếu bài thật — điền dần khi có đề mới. null = "Sắp ra mắt"
   const TEST_LINKS = {
-    toan: {
-      "Khối 1": null,
-      "Khối 2": null,
-      "Khối 3": null,
-      "Khối 4": null,
-      "Khối 5": null,
-    },
-    khoahoc_vi: {
-      "Khối 1": null,
-      "Khối 2": null,
-      "Khối 3": null,
-      "Khối 4": null,
-    },
-    khoahoc_en: {
-      "Grade 1": null,
-      "Grade 2": null,
-      "Grade 3": null,
-      "Grade 4": null,
-    },
+    toan_vi: { "Khối 1": null, "Khối 2": null, "Khối 3": null, "Khối 4": null, "Khối 5": null },
+    toan_en: { "Grade 1": null, "Grade 2": null, "Grade 3": null, "Grade 4": null, "Grade 5": null },
+    khoahoc_vi: { "Khối 1": null, "Khối 2": null, "Khối 3": null, "Khối 4": null, "Khối 5": null },
+    khoahoc_en: { "Grade 1": null, "Grade 2": null, "Grade 3": null, "Grade 4": null, "Grade 5": null },
   };
   // ============================================
 
@@ -186,16 +179,9 @@
   }
 
   function renderGrades(){
-    const subj = SUBJECTS.find(s => s.key === currentSubject);
-    let grades, linkMap;
-    if(subj.hasLang){
-      const lang = LANGS.find(l => l.key === currentLang);
-      grades = lang.grades;
-      linkMap = TEST_LINKS[currentSubject + '_' + currentLang];
-    } else {
-      grades = subj.grades;
-      linkMap = TEST_LINKS[currentSubject];
-    }
+    const key = currentSubject + '_' + currentLang;
+    const grades = GRADES[key];
+    const linkMap = TEST_LINKS[key];
 
     const grid = document.getElementById('gradeGrid');
     grid.innerHTML = '';
